@@ -59,7 +59,7 @@ class Case < ActiveRecord::Base
     a_case = nil
     transaction do
       a_case = self.create!(atts)
-      a_case.steps << Step.create!(:action => '-', :result => '-',
+      a_case.steps << Step.create!(:action => '-', :result => '-',:test_data => '-',
                                    :position => 1)
     end
     a_case

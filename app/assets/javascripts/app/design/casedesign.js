@@ -260,6 +260,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                         [{name: 'id'},
                          {name: 'position'},
                          {name: 'action'},
+                         {name: 'test_data'},
                          {name: 'result'}
                         ]);
                 for (var i=0,il=a.length;i<il;++i) {
@@ -286,7 +287,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
             ds: new Ext.data.JsonStore({
                 url: '/cases/0/steps',
                 root: 'steps',
-                fields: [ 'id', 'position', 'action', 'result', 'version' ]
+                fields: [ 'id', 'position', 'action', 'test_data', 'result', 'version' ]
             }),
 
             cm: new Ext.grid.ColumnModel([
@@ -296,11 +297,12 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                  dataIndex: 'position',
                  align: 'center',
                  resizable: false,
-                 sortable: false},
+                 sortable: false
+                },
                 {
                     header: '<span style="color:black">Action</span> <span style="color:#ea6e04;">*</span>',
                     //width: "45%",
-                    width: 400,
+                    width: 200,
                     dataIndex: 'action',
                     resizable: false,
                     sortable: false,
@@ -309,6 +311,22 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                         var s = v.replace(/</g, '&lt;');
                         s = s.replace(/>/g, '&gt;');
                         return s.replace(/\n/g, '<br />');
+                    },
+                    editable: false
+                },
+                {
+                    header: '<span style="color:black">Test Data</span> <span style="color:#ea6e04;">*</span>',
+                    //width: "45%",
+                    width: 200,
+                    dataIndex: 'test_data',
+                    resizable: false,
+                    sortable: false,
+                    editor: new Ext.grid.GridEditor(new Ext.testia.StepArea(eField)),
+                    renderer: function(v) {
+                        // var s = v.replace(/</g, '&lt;');
+                        // s = s.replace(/>/g, '&gt;');
+                        // return s.replace(/\n/g, '<br />');
+                        return v;
                     },
                     editable: false
                 },
@@ -342,6 +360,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
             var cm = this.getColumnModel();
             cm.setEditable(1,true);
             cm.setEditable(2,true);
+            cm.setEditable(3,true);
             this.toolbar_buttons.each(function(i){
                 i.enable();
             });
@@ -352,6 +371,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
             var cm = this.getColumnModel();
             cm.setEditable(1,false);
             cm.setEditable(2,false);
+            cm.setEditable(3,false);
             Ext.each(this.toolbar_buttons, function(i){
                 if ( !(i.cls && (i.cls.search('tarantula-btn-copy') >= 0)) ) {
                     i.disable();
@@ -377,6 +397,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
             Ext.each(selected, function(i) {
                 maincontent.copiedSteps.push({
                     action: i.data.action,
+                    test_data: i.data.test_data,
                     result: i.data.result
                 });
             });
@@ -391,6 +412,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                 {name: 'id'},
                 {name: 'position'},
                 {name: 'action'},
+                {name: 'test_data'},
                 {name: 'result'}
             ]);
             if (sel && (sel.length > 0)) {
@@ -399,6 +421,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                 for(var i=a.length;(--i)>=0;) {
                     ds.insert(pos, new rec({position:0,
                                         action: a[i].action,
+                                        test_data: a[i].test_data,
                                         result: a[i].result}
                                       ));
                 }
@@ -406,6 +429,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                 Ext.each(a, function(i) {
                     ds.add(new rec({position:0,
                                     action: i.action,
+                                    test_data: i.test_data,
                                     result: i.result}
                                   ));
                 });
@@ -421,6 +445,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
             Ext.each(ds.data.items, function(i) {
                 // Remove leading/trailing empty space
                 i.data.action = i.data.action.strip();
+                i.data.test_data = i.data.test_data.strip();
                 i.data.result = i.data.result.strip();
 
                 ok = ((i.get('action') !== "") && (i.get('result') !== ""));
@@ -510,8 +535,9 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                         // client generated
                         {name: 'position'},
                         {name: 'action'},
+                        {name: 'test_data'},
                         {name: 'result'}
-                    ]))({action: '', result: '',
+                    ]))({action: '', test_data: '', result: '',
                          position: ds.data.getCount()+1});
 
                     ds.add(s);
@@ -605,6 +631,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                 {name: 'version'},
                 {name: 'position'},
                 {name: 'action'},
+                {name: 'test_data'},
                 {name: 'result'}
             ]);
 
@@ -667,6 +694,7 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
 
                 step.position = items[i].data.position;
                 step.action = items[i].data.action;
+                step.test_data = items[i].data.test_data;
                 step.result = items[i].data.result;
 
                 steps[i] = step;
@@ -716,8 +744,9 @@ Ext.extend(Ext.testia.CaseDesign, Ext.testia.MainContentDesign, {
                         // client generated
                         {name: 'position'},
                         {name: 'action'},
+                        {name: 'test_data'},
                         {name: 'result'}
-                    ]))({action: 'Dummy action', result: 'Dummy result',
+                    ]))({action: 'Dummy action', test_data: 'Dummy data', result: 'Dummy result',
                          position: ds.data.getCount()+1});
 
             ds.add(s);

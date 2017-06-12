@@ -86,6 +86,11 @@ module CsvExchange
       
       header = lines.delete_at(0)
       child_class = csv_setup[:children].first.to_s.classify.constantize
+      puts "----------"
+      puts (header+row_sep)
+      puts "----------"
+      puts child_class.csv_header(col_sep, row_sep)
+      puts "----------"
       raise "Wrong child header" if (header+row_sep) != child_class.csv_header(col_sep, row_sep)
       return if lines.empty? # only child header
       chunks = CsvExchange::Import.chunkify(lines, col_sep, row_sep)

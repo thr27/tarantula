@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120905062740) do
+ActiveRecord::Schema.define(:version => 20170612164832) do
 
   create_table "attachment_sets", :force => true do |t|
     t.datetime "created_at"
@@ -450,6 +450,7 @@ ActiveRecord::Schema.define(:version => 20120905062740) do
     t.datetime "updated_at"
     t.boolean  "deleted",     :default => false
     t.string   "external_id"
+    t.text     "test_data"
   end
 
   add_index "step_versions", ["case_id"], :name => "index_step_versions_on_case_id"
@@ -457,6 +458,7 @@ ActiveRecord::Schema.define(:version => 20120905062740) do
 
   create_table "steps", :force => true do |t|
     t.text     "action"
+    t.text     "test_data"
     t.text     "result"
     t.integer  "version",     :default => 0
     t.datetime "created_at"

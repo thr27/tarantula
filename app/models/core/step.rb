@@ -37,6 +37,7 @@ class Step < ActiveRecord::Base
     {
       :id => self.id,    #Actual step id, not versioned step id.
       :action => self.action,
+      :test_data => self.test_data,
       :result => self.result,
       :version => self.version,
       :position => self.position
@@ -47,8 +48,8 @@ class Step < ActiveRecord::Base
     new_atts = data.symbolize_keys
     new_atts.delete(:id)
     new_atts.delete(:version) # not needed..
-    if [self.position, self.action, self.result] !=
-       [new_atts[:position], new_atts[:action], new_atts[:result]]
+    if [self.position, self.action, self.test_data, self.result] !=
+       [new_atts[:position], new_atts[:action], new_atts[:test_data], new_atts[:result]]
       self.update_attributes(new_atts) # increases version
     end
   end
@@ -61,6 +62,7 @@ class Step < ActiveRecord::Base
     attribute :id,     'Step Id', :identifier => true
     attribute :action, 'Action'
     attribute :result, 'Result'
+    attribute :test_data, 'Test Data'
   end
 
 end
