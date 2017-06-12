@@ -61,8 +61,8 @@ class Step < ActiveRecord::Base
   define_csv do
     attribute :id,     'Step Id', :identifier => true
     attribute :action, 'Action'
-    attribute :result, 'Result'
     attribute :test_data, 'Test Data'
+    attribute :result, 'Result'
   end
 
 end
