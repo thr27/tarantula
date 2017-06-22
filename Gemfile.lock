@@ -192,14 +192,14 @@ DEPENDENCIES
   libxml-ruby
   machinist (= 2.0)
   memcache-client
-  mysql2 (~> 0.3.11)
+  mysql2
   passenger
   prawn (~> 0.5.0.1)
   prawn-core (~> 0.5.0.1)
   prawn-format (~> 0.2.0.1)
   prawn-layout (~> 0.2.0.1)
   rails (~> 3.2.11)
-  rake (< 11.0)
+  rake
   rb-readline
   rspec-rails (~> 2.0)
   rubyzip (~> 1.0.0)
