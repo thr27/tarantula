@@ -5,6 +5,9 @@ Step of a case.
 =end
 class Step < ActiveRecord::Base
   extend CsvExchange::Model
+
+  before_save :default_value
+
   acts_as_versioned
   self.locking_column = :version
 
@@ -63,6 +66,10 @@ class Step < ActiveRecord::Base
     attribute :action, 'Action'
     attribute :test_data, 'Test Data'
     attribute :result, 'Result'
+  end
+
+  def default_value
+    self.test_data = '-' if self.test_data.blank?
   end
 
 end
